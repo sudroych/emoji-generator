@@ -106,10 +106,55 @@
             color: #666;
             font-size: 0.9rem;
         }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-banner h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .welcome-banner p {
+            margin: 0;
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .user-info {
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="welcome-banner" id="welcomeBanner">
+            <h2>🎉 Welcome to Emoji Generator!</h2>
+            <p>Hello, <span class="user-info" id="userName">Guest</span>!</p>
+            <p style="font-size: 0.85rem; margin-top: 5px; opacity: 0.9;">Device: <span id="deviceInfo"></span></p>
+        </div>
+        
         <h1>🎲 Random Emoji Generator</h1>
         
         <div class="emoji-display" id="emojiDisplay">
@@ -295,6 +340,42 @@
             clickCount++;
             document.getElementById('counter').textContent = `Clicks: ${clickCount}`;
         }
+
+        // Get user and device information
+        function displayWelcomeInfo() {
+            // Get device/browser information
+            const userAgent = navigator.userAgent;
+            let deviceInfo = 'Unknown Device';
+            
+            // Detect device type
+            if (/Windows/i.test(userAgent)) {
+                deviceInfo = 'Windows PC';
+            } else if (/Macintosh|MacIntel|MacPPC|Mac68K/i.test(userAgent)) {
+                deviceInfo = 'Mac';
+            } else if (/Linux/i.test(userAgent)) {
+                deviceInfo = 'Linux';
+            } else if (/Android/i.test(userAgent)) {
+                deviceInfo = 'Android Device';
+            } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                deviceInfo = 'iOS Device';
+            }
+            
+            // Try to get computer name (limited in browsers for security)
+            // We'll use a combination of browser and platform info
+            const browserInfo = navigator.platform || 'Unknown Platform';
+            
+            // Display device info
+            document.getElementById('deviceInfo').textContent = deviceInfo + ' (' + browserInfo + ')';
+            
+            // Prompt user for their name (optional)
+            const userName = prompt('Welcome! Please enter your name:', 'Guest');
+            if (userName && userName.trim() !== '') {
+                document.getElementById('userName').textContent = userName.trim();
+            }
+        }
+        
+        // Call on page load
+        window.addEventListener('load', displayWelcomeInfo);
     </script>
 </body>
 </html>
