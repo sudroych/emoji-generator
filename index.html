@@ -43,6 +43,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
             animation: fadeIn 0.3s ease-in;
         }
 
@@ -55,6 +57,13 @@
                 opacity: 1;
                 transform: scale(1);
             }
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .emoji-button {
@@ -77,6 +86,10 @@
 
         .emoji-button:active {
             transform: translateY(-1px);
+        }
+
+        .multi-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
 
         .counter {
@@ -103,9 +116,15 @@
             Click the button!
         </div>
         
-        <button class="emoji-button" id="generateBtn" onclick="generateEmoji()">
-            Generate Emoji
-        </button>
+        <div class="button-container">
+            <button class="emoji-button" id="generateBtn" onclick="generateEmoji()">
+                Generate Emoji
+            </button>
+            
+            <button class="emoji-button multi-button" id="multiBtn" onclick="generateMultipleEmojis()">
+                Generate 5 Emojis
+            </button>
+        </div>
         
         <div class="counter" id="counter">
             Clicks: 0
@@ -239,6 +258,32 @@
             // Display the emoji
             const emojiDisplay = document.getElementById('emojiDisplay');
             emojiDisplay.textContent = randomEmoji;
+            emojiDisplay.style.fontSize = '120px';
+            
+            // Reset animation
+            emojiDisplay.style.animation = 'none';
+            setTimeout(() => {
+                emojiDisplay.style.animation = 'fadeIn 0.3s ease-in';
+            }, 10);
+            
+            // Update counter
+            clickCount++;
+            document.getElementById('counter').textContent = `Clicks: ${clickCount}`;
+        }
+
+        function generateMultipleEmojis() {
+            // Generate 5 random emojis
+            const emojiDisplay = document.getElementById('emojiDisplay');
+            let multipleEmojis = '';
+            
+            for (let i = 0; i < 5; i++) {
+                const randomIndex = Math.floor(Math.random() * emojis.length);
+                multipleEmojis += emojis[randomIndex] + ' ';
+            }
+            
+            // Display the emojis
+            emojiDisplay.textContent = multipleEmojis.trim();
+            emojiDisplay.style.fontSize = '80px';
             
             // Reset animation
             emojiDisplay.style.animation = 'none';
